@@ -1,0 +1,14 @@
+input[type=text] {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+}
+input[type=submit] {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
