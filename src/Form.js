@@ -3,23 +3,21 @@ import Messages from './Messages';
 import './Form.css';
 
 export const Form = () => {
+    const amdinName = 'R2D2';
+    const adminMessage = { name: amdinName, text: 'beeeb-BIP-bep piu'};
     const [messageList, setMessage] = useState([        
         {name: 'John Doe', text: 'Hello there'}, 
-        {name: 'R2D2', text: 'beeeb-BIP-bep piu'},
+        adminMessage,
     ]);
     const [newMessage, setNewMessage] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
-    const [lastAuthor, setLastAuthor] = useState('R2D2');    
+    const [lastAuthor, setLastAuthor] = useState(amdinName);    
 
     useEffect(() => {    
-        if (lastAuthor !== 'R2D2') {
+        if (lastAuthor !== amdinName) {
             setTimeout( () => {
-                setMessage((prevArray) => {                
-                    let newArray = prevArray.slice();
-                    newArray.push({ name: 'R2D2', text: 'beeeb-BIP-bep piu'});            
-                    return newArray;
-                });   
-                setLastAuthor('R2D2');      
+                setMessage((prevArray) => [...prevArray, adminMessage]);   
+                setLastAuthor(amdinName);      
             }, 1500);        
         }    
     }, [lastAuthor]);
@@ -35,19 +33,10 @@ export const Form = () => {
 
     const addToList = (e) => {  
         e.preventDefault();    
-        let messageObject = {};
-        messageObject.name = newAuthor;    
-        messageObject.text = newMessage;  
-        
+        const messageObject = {name: newAuthor, text: newMessage};
         setLastAuthor(newAuthor);
+        setMessage((prevArray) => [...prevArray, messageObject]);        
         
-        setMessage((prevArray) => {            
-            let newArray = prevArray.slice();
-            newArray.push(messageObject);            
-            return newArray;
-        });        
-
-
     }
     
     return (
@@ -58,9 +47,7 @@ export const Form = () => {
                 <input placeholder="Your message" type="text" onChange={editMessage}/>
                 <input type="submit" />
             </form>                
-            <Messages messageList={messageList} />
-            
-
+            <Messages messageList={messageList} />            
         </>
     )
 
