@@ -1,5 +1,9 @@
+.messages {
+    width: 70%;
+}
+
 .message {
-    width: 80%;
+    width: 100%;
     background-color: #fff;
     color: rgb(44, 44, 44);
     margin-bottom: 10px;

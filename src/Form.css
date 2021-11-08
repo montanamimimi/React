@@ -12,3 +12,12 @@ form {
     display: flex;
     flex-direction: column;
 }
+
+.messages {
+    width: 70%;
+    margin-top: 50px;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    margin-bottom: 20px;
+}
