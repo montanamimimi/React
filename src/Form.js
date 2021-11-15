@@ -5,15 +5,37 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 
+const adminName = 'R2-D2';
+const adminText = 'beeeb-BIP-bep piu';
+const admin2Name = 'C-3PO';
+const admin2Text = 'beeeb-xxxBIP-bep piu';
+const admin3Name = 'BB-8';
+const admin3Text = 'beeeb-zzzzzzBIP-bep piu';
 
-
-export const Form = () => {
-    const adminName = 'R2-D2';
-    const adminText = 'beeeb-BIP-bep piu';
-    const [messageList, setMessage] = useState([        
+const initialMessages = {
+    chat1: [        
         {id: 1, name: 'John Doe', text: 'Hello there'}, 
         {id: 2, name: adminName, text: adminText},
-    ]);
+    ],
+
+    chat2: [        
+        {id: 1, name: 'John Doe', text: 'Hello there'}, 
+        {id: 2, name: admin2Name, text: admin2Text},
+    ],
+
+    chat3: [        
+        {id: 1, name: 'John Doe', text: 'Hello there'}, 
+        {id: 2, name: admin3Name, text: admin3Text},
+    ]
+};
+
+
+
+export const Form = (props) => {
+
+    const chatId = props.chatId;
+
+    const [messageList, setMessage] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
     const [lastAuthor, setLastAuthor] = useState(adminName);    
@@ -25,7 +47,7 @@ export const Form = () => {
         if (lastAuthor !== adminName) { 
             const timeout = setTimeout( () => {                
                 const adminMessage = { id: idCounter + 1, name: adminName, text: adminText};                
-                setMessage((prevArray) => [...prevArray, adminMessage]);   
+                setMessage( (prevArray) => ({...prevArray, [chatId]: [...prevArray[chatId],  adminMessage]}));   
                 setLastAuthor(adminName);      
             }, 1500);        
             setId((prevId) => prevId + 1);
@@ -51,7 +73,7 @@ export const Form = () => {
         const messageObject = {id: idCounter + 1, name: newAuthor, text: newMessage};
         setId((prevId) => prevId + 1);
         setLastAuthor(newAuthor);
-        setMessage((prevArray) => [...prevArray, messageObject]);   
+        setMessage((prevArray) => ({...prevArray, [chatId] : [...prevArray[chatId], messageObject]}) );   
         setNewMessage('');     
         inputRef.current?.focus();
         
@@ -80,7 +102,7 @@ export const Form = () => {
 
             </form>     
             <div class="messages">
-                <Messages messageList={messageList} />           
+                <Messages messageList={messageList[chatId]} />           
             </div>           
 
         </>

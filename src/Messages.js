@@ -1,9 +1,7 @@
 import './Messages.css';
 
 export const Messages = (props) => {
-
-    // Чтобы было привычнее читать чат сделала реверс массива, новые сообщения появляются сверху
-
+    
     const reverseMessages = props.messageList.slice().reverse();
 
     return reverseMessages.map((item) => (
