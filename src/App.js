@@ -27,7 +27,7 @@ export const App = () => (
         <Route path=":chatId" element={<Chat />} />
       </Route>        
       <Route path="/profile" element={<Profile />} />
-
+      <Route path="*" element={<h3>404</h3>} />
 
     </Routes>
   </BrowserRouter>
