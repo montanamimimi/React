@@ -18,7 +18,7 @@ export const BotsList = () => {
                     <li>
                         <NavLink 
                             style={({ isActive }) => ({ color: isActive ? 'red' : 'blue'})} 
-                            to={`chat${bot.id}`}>
+                            to={`/chats/chat${bot.id}`}>
                                 {bot.name}
                         </NavLink>
                     </li>

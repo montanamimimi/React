@@ -5,27 +5,35 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 
-const adminName = 'R2-D2';
-const adminText = 'beeeb-BIP-bep piu';
-const admin2Name = 'C-3PO';
-const admin2Text = 'beeeb-xxxBIP-bep piu';
-const admin3Name = 'BB-8';
-const admin3Text = 'beeeb-zzzzzzBIP-bep piu';
+const adminsList = {
+    chat1: {name: 'R2-D2', message: 'beeeb-BIP-bep piu'},
+
+    chat2: {name: 'C-3PO', message: 'How are you hello '},
+
+    chat3: {name: 'BB-8', message: 'wzzz PIU-PIU piiiip'},
+}
+
+// const adminName = 'R2-D2';
+// const adminText = 'beeeb-BIP-bep piu';
+// const admin2Name = 'C-3PO';
+// const admin2Text = 'beeeb-xxxBIP-bep piu';
+// const admin3Name = 'BB-8';
+// const admin3Text = 'beeeb-zzzzzzBIP-bep piu';
 
 const initialMessages = {
     chat1: [        
         {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: adminName, text: adminText},
+        {id: 2, name: adminsList['chat1'].name, text: adminsList['chat1'].message},
     ],
 
     chat2: [        
         {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: admin2Name, text: admin2Text},
+        {id: 2, name: adminsList['chat2'].name, text: adminsList['chat2'].message},
     ],
 
     chat3: [        
         {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: admin3Name, text: admin3Text},
+        {id: 2, name: adminsList['chat3'].name, text: adminsList['chat3'].message},
     ]
 };
 
@@ -33,22 +41,24 @@ const initialMessages = {
 
 export const Form = (props) => {
 
-    const chatId = props.chatId;
+    const chatId = props.chatId;    
 
     const [messageList, setMessage] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
-    const [lastAuthor, setLastAuthor] = useState(adminName);    
+    const [lastAuthor, setLastAuthor] = useState(adminsList[chatId].name);    
     const inputRef = useRef();
     const nameRef = useRef();
     const [idCounter, setId] = useState(2);
 
+    console.log(adminsList[chatId].name);
+
     useEffect(() => {    
-        if (lastAuthor !== adminName) { 
+        if (lastAuthor !== adminsList[chatId].name) { 
             const timeout = setTimeout( () => {                
-                const adminMessage = { id: idCounter + 1, name: adminName, text: adminText};                
+                const adminMessage = { id: idCounter + 1, name: adminsList[chatId].name, text: adminsList[chatId].message};                
                 setMessage( (prevArray) => ({...prevArray, [chatId]: [...prevArray[chatId],  adminMessage]}));   
-                setLastAuthor(adminName);      
+                setLastAuthor(adminsList[chatId].name);      
             }, 1500);        
             setId((prevId) => prevId + 1);
             return () => clearTimeout(timeout);
