@@ -3,22 +3,14 @@ import Messages from './Messages';
 import './Form.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Navigate } from 'react-router-dom'
 
 
 const adminsList = {
     chat1: {name: 'R2-D2', message: 'beeeb-BIP-bep piu'},
-
     chat2: {name: 'C-3PO', message: 'How are you hello '},
-
     chat3: {name: 'BB-8', message: 'wzzz PIU-PIU piiiip'},
 }
-
-// const adminName = 'R2-D2';
-// const adminText = 'beeeb-BIP-bep piu';
-// const admin2Name = 'C-3PO';
-// const admin2Text = 'beeeb-xxxBIP-bep piu';
-// const admin3Name = 'BB-8';
-// const admin3Text = 'beeeb-zzzzzzBIP-bep piu';
 
 const initialMessages = {
     chat1: [        
@@ -46,24 +38,27 @@ export const Form = (props) => {
     const [messageList, setMessage] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
-    const [lastAuthor, setLastAuthor] = useState(adminsList[chatId].name);    
+    const [lastAuthor, setLastAuthor] = useState('Human');    
     const inputRef = useRef();
     const nameRef = useRef();
     const [idCounter, setId] = useState(2);
 
-    console.log(adminsList[chatId].name);
 
     useEffect(() => {    
-        if (lastAuthor !== adminsList[chatId].name) { 
-            const timeout = setTimeout( () => {                
-                const adminMessage = { id: idCounter + 1, name: adminsList[chatId].name, text: adminsList[chatId].message};                
-                setMessage( (prevArray) => ({...prevArray, [chatId]: [...prevArray[chatId],  adminMessage]}));   
-                setLastAuthor(adminsList[chatId].name);      
-            }, 1500);        
-            setId((prevId) => prevId + 1);
-            return () => clearTimeout(timeout);
-        }    
+        if (adminsList[chatId]) {
+            if (lastAuthor !== adminsList[chatId].name) { 
+                const timeout = setTimeout( () => {                
+                    const adminMessage = { id: idCounter + 1, name: adminsList[chatId].name, text: adminsList[chatId].message};                
+                    setMessage( (prevArray) => ({...prevArray, [chatId]: [...prevArray[chatId],  adminMessage]}));   
+                    setLastAuthor(adminsList[chatId].name);      
+                }, 1500);        
+                setId((prevId) => prevId + 1);
+                return () => clearTimeout(timeout);
+            }    
+        }
     }, [lastAuthor]);
+
+
 
     useEffect(() => {
         nameRef.current?.focus();
@@ -88,10 +83,14 @@ export const Form = (props) => {
         inputRef.current?.focus();
         
     }
+
+    if (!adminsList[chatId]) {
+        return <Navigate replace to="/chats" />
+    }
     
     return (
         <>
-            <h3>Add new message</h3>
+            <h3>Add new message to {adminsList[chatId] ? adminsList[chatId].name : 'Nobody'} </h3>
             <form> 
                 {/* <input type="text" ref={myRef} /> */}
                 <TextField 

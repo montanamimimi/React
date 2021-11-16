@@ -8,14 +8,14 @@ import {  BrowserRouter, Link, Routes, Route } from 'react-router-dom'
 
 export const App = () => (
   <BrowserRouter>
-    <ul> 
-      <li>
+    <ul class="main-menu"> 
+      <li class="main-menu__item">
         <Link to="/">Home</Link>
       </li>
-      <li>
+      <li class="main-menu__item">
         <Link to="/chats">Chats</Link>
       </li>
-      <li>
+      <li class="main-menu__item">
         <Link to="/profile">Profile</Link>
       </li>
     </ul>
