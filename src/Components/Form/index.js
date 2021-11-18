@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Messages from './Messages';
+import Messages from '../Messages';
 import './Form.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
