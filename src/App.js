@@ -1,23 +1,37 @@
 import './App.css';
-import Form from './Form';
+import React from 'react';
+import Home from './Home';
+import Profile from './Profile';
 import BotsList from './BotsList';
+import Chat from './Chat';
+import {  BrowserRouter, Link, Routes, Route } from 'react-router-dom'
 
+export const App = () => (
+  <BrowserRouter>
+    <ul class="main-menu"> 
+      <li class="main-menu__item">
+        <Link to="/">Home</Link>
+      </li>
+      <li class="main-menu__item">
+        <Link to="/chats">Chats</Link>
+      </li>
+      <li class="main-menu__item">
+        <Link to="/profile">Profile</Link>
+      </li>
+    </ul>
 
-function App() {
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="chats">
+        <Route index element={<BotsList />} />
+        <Route path=":chatId" element={<Chat />} />
+      </Route>        
+      <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<h3>404</h3>} />
 
-  return (
-    <div className="App">
-      <div class="app-list">
-        <BotsList />
-      </div>
-      <div class="app-main">
-          <h3>Lets chat! </h3>          
-          <Form />
-      </div>
+    </Routes>
+  </BrowserRouter>
+);
 
-      
-    </div>
-  );
-}
 
 export default App;

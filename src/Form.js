@@ -3,35 +3,62 @@ import Messages from './Messages';
 import './Form.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Navigate } from 'react-router-dom'
 
 
+const adminsList = {
+    chat1: {name: 'R2-D2', message: 'beeeb-BIP-bep piu'},
+    chat2: {name: 'C-3PO', message: 'How are you hello '},
+    chat3: {name: 'BB-8', message: 'wzzz PIU-PIU piiiip'},
+}
 
-
-export const Form = () => {
-    const adminName = 'R2-D2';
-    const adminText = 'beeeb-BIP-bep piu';
-    const [messageList, setMessage] = useState([        
+const initialMessages = {
+    chat1: [        
         {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: adminName, text: adminText},
-    ]);
+        {id: 2, name: adminsList['chat1'].name, text: adminsList['chat1'].message},
+    ],
+
+    chat2: [        
+        {id: 1, name: 'John Doe', text: 'Hello there'}, 
+        {id: 2, name: adminsList['chat2'].name, text: adminsList['chat2'].message},
+    ],
+
+    chat3: [        
+        {id: 1, name: 'John Doe', text: 'Hello there'}, 
+        {id: 2, name: adminsList['chat3'].name, text: adminsList['chat3'].message},
+    ]
+};
+
+
+
+export const Form = (props) => {
+
+    const chatId = props.chatId;    
+
+    const [messageList, setMessage] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
-    const [lastAuthor, setLastAuthor] = useState(adminName);    
+    const [lastAuthor, setLastAuthor] = useState('Human');    
     const inputRef = useRef();
     const nameRef = useRef();
     const [idCounter, setId] = useState(2);
 
+
     useEffect(() => {    
-        if (lastAuthor !== adminName) { 
-            const timeout = setTimeout( () => {                
-                const adminMessage = { id: idCounter + 1, name: adminName, text: adminText};                
-                setMessage((prevArray) => [...prevArray, adminMessage]);   
-                setLastAuthor(adminName);      
-            }, 1500);        
-            setId((prevId) => prevId + 1);
-            return () => clearTimeout(timeout);
-        }    
+        if (adminsList[chatId]) {
+            if (lastAuthor !== adminsList[chatId].name) { 
+                const timeout = setTimeout( () => {                
+                    const adminMessage = { id: idCounter + 1, name: adminsList[chatId].name, text: adminsList[chatId].message};                
+                    setMessage( (prevArray) => ({...prevArray, [chatId]: [...prevArray[chatId],  adminMessage]}));   
+                    setLastAuthor(adminsList[chatId].name);      
+                }, 1500);        
+                setId((prevId) => prevId + 1);
+                return () => clearTimeout(timeout);
+            }    
+        }
     }, [lastAuthor]);
+
+
 
     useEffect(() => {
         nameRef.current?.focus();
@@ -51,15 +78,19 @@ export const Form = () => {
         const messageObject = {id: idCounter + 1, name: newAuthor, text: newMessage};
         setId((prevId) => prevId + 1);
         setLastAuthor(newAuthor);
-        setMessage((prevArray) => [...prevArray, messageObject]);   
+        setMessage((prevArray) => ({...prevArray, [chatId] : [...prevArray[chatId], messageObject]}) );   
         setNewMessage('');     
         inputRef.current?.focus();
         
     }
+
+    if (!adminsList[chatId]) {
+        return <Navigate replace to="/chats" />
+    }
     
     return (
         <>
-            <h3>Add new message</h3>
+            <h3>Add new message to {adminsList[chatId] ? adminsList[chatId].name : 'Nobody'} </h3>
             <form> 
                 {/* <input type="text" ref={myRef} /> */}
                 <TextField 
@@ -80,7 +111,7 @@ export const Form = () => {
 
             </form>     
             <div class="messages">
-                <Messages messageList={messageList} />           
+                <Messages messageList={messageList[chatId]} />           
             </div>           
 
         </>
