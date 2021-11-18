@@ -1,4 +1,8 @@
 import { NavLink } from 'react-router-dom';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
 const myBots = [
     {id: 1, name: 'R2-D2'},
@@ -13,18 +17,20 @@ export const BotsList = () => {
     return (
         <>
             <h3> List of chats </h3>
-            <ul>
+            <List>
                 {myBots.map((bot) => (
-                    <li>
-                        <NavLink 
-                            style={({ isActive }) => ({ color: isActive ? 'red' : 'blue'})} 
-                            to={`/chats/chat${bot.id}`}>
-                                {bot.name}
-                        </NavLink>
-                    </li>
+                    <ListItem key={bot.id} >
+                        <ListItemButton>
+                            <NavLink 
+                                style={({ isActive }) => ({ color: isActive ? 'red' : 'blue'})} 
+                                to={`/chats/chat${bot.id}`}>
+                                <ListItemText primary={bot.name} />
+                            </NavLink>
+                        </ListItemButton>
+                    </ListItem>
                     
                 ))}
-            </ul>
+            </List>
         </>
     )
 

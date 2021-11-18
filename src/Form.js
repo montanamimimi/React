@@ -89,8 +89,8 @@ export const Form = (props) => {
     }
     
     return (
-        <>
-            <h3>Add new message to {adminsList[chatId] ? adminsList[chatId].name : 'Nobody'} </h3>
+        <>            
+            <h3>Add new message to {adminsList[chatId].name} </h3>
             <form> 
                 {/* <input type="text" ref={myRef} /> */}
                 <TextField 
