@@ -1,8 +1,12 @@
 import './Messages.css';
+import { useSelector } from 'react-redux';
 
 export const Messages = (props) => {
+
+    const messageList = useSelector(state => state.messages);
     
-    const reverseMessages = props.messageList.slice().reverse();
+    const currentChat = messageList[props.chatId]
+    const reverseMessages = currentChat.slice().reverse();
 
     return reverseMessages.map((item) => (
         <div class="message" key={item.id}>

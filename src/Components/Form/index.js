@@ -3,54 +3,42 @@ import Messages from '../Messages';
 import './Form.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { Navigate } from 'react-router-dom'
-
-
-const adminsList = {
-    chat1: {name: 'R2-D2', message: 'beeeb-BIP-bep piu'},
-    chat2: {name: 'C-3PO', message: 'How are you hello '},
-    chat3: {name: 'BB-8', message: 'wzzz PIU-PIU piiiip'},
-}
-
-const initialMessages = {
-    chat1: [        
-        {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: adminsList['chat1'].name, text: adminsList['chat1'].message},
-    ],
-
-    chat2: [        
-        {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: adminsList['chat2'].name, text: adminsList['chat2'].message},
-    ],
-
-    chat3: [        
-        {id: 1, name: 'John Doe', text: 'Hello there'}, 
-        {id: 2, name: adminsList['chat3'].name, text: adminsList['chat3'].message},
-    ]
-};
-
+import { Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { addMessage } from '../../Store/messages/actions';
 
 
 export const Form = (props) => {
 
     const chatId = props.chatId;    
+    const dispatch = useDispatch();
 
-    const [messageList, setMessage] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const [newAuthor, setNewAuthor] = useState('');
     const [lastAuthor, setLastAuthor] = useState('Human');    
     const inputRef = useRef();
     const nameRef = useRef();
     const [idCounter, setId] = useState(2);
+    
+    const bzzMessageList = useSelector(state => state.messages);
 
+    const [messageList, setMessage] = useState(bzzMessageList);    
+
+    const myBots = useSelector(state => state.chats);
+
+    let currentAdmin = myBots.find( bot => bot.id == chatId);
+
+    useEffect(() => {        
+        currentAdmin = myBots.find( bot => bot.id == chatId);                                   
+    }, [chatId]);
 
     useEffect(() => {    
-        if (adminsList[chatId]) {
-            if (lastAuthor !== adminsList[chatId].name) { 
+        if (currentAdmin) {
+            if (lastAuthor !== currentAdmin.name) { 
                 const timeout = setTimeout( () => {                
-                    const adminMessage = { id: idCounter + 1, name: adminsList[chatId].name, text: adminsList[chatId].message};                
-                    setMessage( (prevArray) => ({...prevArray, [chatId]: [...prevArray[chatId],  adminMessage]}));   
-                    setLastAuthor(adminsList[chatId].name);      
+                    const adminMessage = { chatId: chatId, id: idCounter + 1, name: currentAdmin.name, text: currentAdmin.message};                       
+                    dispatch(addMessage(adminMessage));                   
+                    setLastAuthor(currentAdmin.name);      
                 }, 1500);        
                 setId((prevId) => prevId + 1);
                 return () => clearTimeout(timeout);
@@ -75,24 +63,24 @@ export const Form = (props) => {
 
     const addToList = (e) => {  
         e.preventDefault();    
-        const messageObject = {id: idCounter + 1, name: newAuthor, text: newMessage};
+        const messageObject = {chatId: chatId, id: idCounter + 1, name: newAuthor, text: newMessage};
         setId((prevId) => prevId + 1);
-        setLastAuthor(newAuthor);
-        setMessage((prevArray) => ({...prevArray, [chatId] : [...prevArray[chatId], messageObject]}) );   
+        setLastAuthor(newAuthor);              
+        dispatch(addMessage(messageObject));  
         setNewMessage('');     
         inputRef.current?.focus();
         
     }
 
-    if (!adminsList[chatId]) {
+    if (!currentAdmin) {
         return <Navigate replace to="/chats" />
     }
     
     return (
         <>            
-            <h3>Add new message to {adminsList[chatId].name} </h3>
+            <h3>Add new message to {currentAdmin.name} </h3>
             <form> 
-                {/* <input type="text" ref={myRef} /> */}
+                
                 <TextField 
                     label="Your name" 
                     variant="outlined" 
@@ -111,7 +99,7 @@ export const Form = (props) => {
 
             </form>     
             <div class="messages">
-                <Messages messageList={messageList[chatId]} />           
+                <Messages chatId={chatId} />           
             </div>           
 
         </>
