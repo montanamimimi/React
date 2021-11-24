@@ -68,8 +68,7 @@ export const Form = (props) => {
         setLastAuthor(newAuthor);              
         dispatch(addMessage(messageObject));  
         setNewMessage('');     
-        inputRef.current?.focus();
-        
+        inputRef.current?.focus();                
     }
 
     if (!currentAdmin) {

@@ -24,10 +24,8 @@ export const messagesReducer = (state = initialMessages, { type, payload }) => {
         case ADD_MESSAGE:
             return {...state, [payload.chatId] : [...state[payload.chatId], {id: payload.id, name: payload.name, text: payload.text}] }; 
         case ADD_MESSAGE_CHAT:
-            return {...state, ...payload}; 
+            return {...state, ...payload};                          
         default:
             return state;
     }
 }
-
-//  setMessage((prevArray) => ({...prevArray, [chatId] : [...prevArray[chatId], messageObject]}) );   

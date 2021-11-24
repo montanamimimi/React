@@ -1,10 +1,10 @@
 import './Messages.css';
 import { useSelector } from 'react-redux';
+import { selectMessages } from '../../Store/messages/selectors';
 
 export const Messages = (props) => {
 
-    const messageList = useSelector(state => state.messages);
-    
+    const messageList = useSelector(selectMessages);    
     const currentChat = messageList[props.chatId]
     const reverseMessages = currentChat.slice().reverse();
 

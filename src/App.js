@@ -2,7 +2,6 @@ import './App.css';
 import Home from './Components/Home';
 import Profile from './Components/Profile';
 import BotsList from './Components/BotsList';
-import { useEffect,  useState} from 'react';
 import Chat from './Components/Chat';
 import {  BrowserRouter, Link, Routes, Route } from 'react-router-dom'
 import { ThemeContext } from './Utils/ThemeContext';
