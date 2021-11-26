@@ -12,6 +12,28 @@ export const addMessageChat = (newChat) => ({
     payload: newChat
 });
 
+let timeout;
+
+export const addMessageWithReply = (message) => (dispatch) => {
+    dispatch(addMessage(message));     
+    
+    if (timeout) {
+        clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+
+        const botMessage = {
+            id: `mess${Date.now()}`,
+            text: message.adminText,
+            name: message.adminName,
+            chatId: message.chatId,
+        }
+        dispatch(addMessage(botMessage));    
+    }, 1500);
+
+}
+
 
 
 

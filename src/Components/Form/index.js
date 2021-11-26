@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { addMessage } from '../../Store/messages/actions';
+import { addMessageWithReply } from '../../Store/messages/actions';
 
 
 export const Form = (props) => {
@@ -32,26 +32,9 @@ export const Form = (props) => {
         currentAdmin = myBots.find( bot => bot.id == chatId);                                   
     }, [chatId]);
 
-    useEffect(() => {    
-        if (currentAdmin) {
-            if (lastAuthor !== currentAdmin.name) { 
-                const timeout = setTimeout( () => {                
-                    const adminMessage = { chatId: chatId, id: idCounter + 1, name: currentAdmin.name, text: currentAdmin.message};                       
-                    dispatch(addMessage(adminMessage));                   
-                    setLastAuthor(currentAdmin.name);      
-                }, 1500);        
-                setId((prevId) => prevId + 1);
-                return () => clearTimeout(timeout);
-            }    
-        }
-    }, [lastAuthor]);
-
-
-
     useEffect(() => {
         nameRef.current?.focus();
     }, []);
-
 
     const editMessage = (e) => {        
         setNewMessage(e.target.value);
@@ -63,10 +46,16 @@ export const Form = (props) => {
 
     const addToList = (e) => {  
         e.preventDefault();    
-        const messageObject = {chatId: chatId, id: idCounter + 1, name: newAuthor, text: newMessage};
+        const messageObject = {
+            chatId: chatId, 
+            id: idCounter + 1, 
+            name: newAuthor, 
+            text: newMessage,  
+            adminName: currentAdmin.name, 
+            adminText: currentAdmin.message};
         setId((prevId) => prevId + 1);
         setLastAuthor(newAuthor);              
-        dispatch(addMessage(messageObject));  
+        dispatch(addMessageWithReply(messageObject));  
         setNewMessage('');     
         inputRef.current?.focus();                
     }
