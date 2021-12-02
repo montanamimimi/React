@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toggleCheckbox } from '../../Store/profile/actions';
-import { changeName } from '../../Store/profile/actions';
 import { selectName, checkboxStatus } from '../../Store/profile/selectors';
+import { logOut, userRef } from '../../services/firebase';
+import { onValue, set } from 'firebase/database';
 
 export const Profile = () => {
     
@@ -10,6 +11,19 @@ export const Profile = () => {
     const checkbox = useSelector(checkboxStatus);
     const [value, setValue] = useState(name);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const unsubscribe = onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            setValue(userData?.name || "DN");
+        });
+
+        return unsubscribe;
+    }, [setValue])
+
+    // const handleSignOut = () => {
+    //     dispatch(signOut());
+    // }
 
     const handleChangeText = (e) => {
         setValue(e.target.value)
@@ -21,7 +35,17 @@ export const Profile = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(changeName(value));
+        set(userRef, {
+            name: value,
+        })
+    }
+
+    const handleLogOut = async () => {
+        try {
+            await logOut();            
+        } catch (err) {
+            console.log(err);
+        }            
     }
 
     return (
@@ -32,6 +56,8 @@ export const Profile = () => {
                 <input type="text" value={value} onChange={handleChangeText} />    
                 <input type="submit" />
             </form>
+
+            <button onClick={handleLogOut}>SIGN OUT</button>
             
             
         </>

@@ -6,6 +6,9 @@ import Api from './Components/Api';
 import Chat from './Components/Chat';
 import {  BrowserRouter, Link, Routes, Route } from 'react-router-dom'
 import { ThemeContext } from './Utils/ThemeContext';
+import { PublicRoute } from './Components/PublicRoute';
+import { PrivateRoute } from './Components/PrivateRoute';
+import { Router } from './Components/Routes';
 
 
 
@@ -14,7 +17,9 @@ export const App = () => {
   return ( 
 
     <ThemeContext.Provider value="blue">
-      <BrowserRouter>
+
+      <Router />
+      {/* <BrowserRouter>
         <ul class="main-menu"> 
           <li class="main-menu__item">
             <Link to="/">Home</Link>
@@ -31,17 +36,43 @@ export const App = () => {
         </ul>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route 
+            path="/" 
+            element={
+              <PublicRoute> 
+                <Home /> 
+              </PublicRoute>} 
+          />
           <Route path="chats">
-            <Route index element={<BotsList />} />
-            <Route path=":chatId" element={<Chat />} />
+            <Route 
+              index 
+              element={
+                <PrivateRoute>
+                  <BotsList />
+                </PrivateRoute>
+                } 
+            />
+            <Route 
+              path=":chatId" 
+              element={
+                <PrivateRoute>
+                  <Chat />
+                </PrivateRoute>
+                } 
+          />
           </Route>        
           <Route path="/api" element={<Api />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route 
+            path="/profile" 
+            element={
+              <PrivateRoute> 
+                <Profile /> 
+              </PrivateRoute>} 
+          />
           <Route path="*" element={<h3>404</h3>} />
 
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </ThemeContext.Provider> 
   
 )};
