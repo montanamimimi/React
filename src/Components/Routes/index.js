@@ -4,7 +4,7 @@ import BotsList from '../BotsList';
 import Api from '../Api';
 import Chat from '../Chat';
 import {  BrowserRouter, Link, Routes, Route } from 'react-router-dom'
-import { PublicRoute, PublicOutlet } from '../PublicRoute';
+import { PublicOutlet } from '../PublicRoute';
 import { PrivateRoute } from '../PrivateRoute';
 import { SignUp } from '../SignUp';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,6 @@ import { onValue } from 'firebase/database';
 export const Router = () => {
 
     const dispatch = useDispatch();
-
     const [msgs, setMsgs] = useState({});
 
     useEffect(() => {
@@ -27,19 +26,15 @@ export const Router = () => {
                 dispatch(signOut());
             }
         });
-
         return unsubscribe;
-
     }, []);
 
     useEffect(() => {
         onValue(messagesRef, (snapshot) => {
             const newMsgs = {};
-
             snapshot.forEach((chatMsgsSnap) => {
                 newMsgs[chatMsgsSnap.key] = chatMsgsSnap.val().messages || [];
             });
-
             setMsgs(newMsgs);
         });
     }, []);
@@ -73,7 +68,7 @@ export const Router = () => {
                   index 
                   element={
                     <PrivateRoute>
-                      <BotsList />
+                      <BotsList msgs={msgs} />
                     </PrivateRoute>
                     } 
                 />
@@ -81,7 +76,7 @@ export const Router = () => {
                   path=":chatId" 
                   element={
                     <PrivateRoute>
-                      <Chat />
+                      <Chat msgs={msgs} />
                     </PrivateRoute>
                     } 
               />

@@ -8,9 +8,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addMessageWithReply } from '../../Store/messages/actions';
 
 
-export const Form = (props) => {
+export const Form = ({ chatId, msgs }) => {
 
-    const chatId = props.chatId;    
+  
     const dispatch = useDispatch();
 
     const [newMessage, setNewMessage] = useState('');
@@ -65,7 +65,7 @@ export const Form = (props) => {
     }
     
     return (
-        <>            
+        <>                     
             <h3>Add new message to {currentAdmin.name} </h3>
             <form> 
                 
