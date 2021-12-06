@@ -2,7 +2,7 @@ import BotsList from '../BotsList';
 import Form from '../Form';
 import { useParams } from 'react-router-dom';
 
-export const Chat = () => {        
+export const Chat = (props) => {        
 
   return (
     <div className="App">
@@ -11,7 +11,9 @@ export const Chat = () => {
       
       <div class="app-main">
           <h3>Lets chat! </h3>          
-          <Form chatId={useParams().chatId} />
+          <Form 
+            chatId={useParams().chatId} 
+          />
       </div>      
     </div>
   );
