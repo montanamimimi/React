@@ -2,6 +2,7 @@ import './App.css';
 import Home from './Components/Home';
 import Profile from './Components/Profile';
 import BotsList from './Components/BotsList';
+import Api from './Components/Api';
 import Chat from './Components/Chat';
 import {  BrowserRouter, Link, Routes, Route } from 'react-router-dom'
 import { ThemeContext } from './Utils/ThemeContext';
@@ -22,6 +23,9 @@ export const App = () => {
             <Link to="/chats">Chats</Link>
           </li>
           <li class="main-menu__item">
+            <Link to="/api">Api</Link>
+          </li>
+          <li class="main-menu__item">
             <Link to="/profile">Profile</Link>
           </li>
         </ul>
@@ -32,6 +36,7 @@ export const App = () => {
             <Route index element={<BotsList />} />
             <Route path=":chatId" element={<Chat />} />
           </Route>        
+          <Route path="/api" element={<Api />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<h3>404</h3>} />
 
