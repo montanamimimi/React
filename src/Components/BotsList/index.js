@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteChat } from '../../Store/chats/actions';
-import { addMessageChat } from '../../Store/messages/actions';
 import { chatsList } from '../../Store/chats/selectors';
 import { onValue, set } from 'firebase/database';
 import { chatsRef, getChatMsgsRefById, getChatRefById } from '../../services/firebase'
@@ -43,14 +42,6 @@ export const BotsList = () => {
         set(getChatRefById(newId), { id: newId, name: value, message: 'Vzzzzzz' });
         set(getChatMsgsRefById(newId), {id: 1, name: value, text: 'Vzzzzzz'})
 
-        // let newMessagesChat = {};
-        // newMessagesChat[newId] = 
-        //     [        
-        //         {id: 1, name: value, text: 'Vzzzzzz'},                 
-        //     ]
-        
-
-       // dispatch(addMessageChat(newMessagesChat));      
     }
     const deleteChatItem = (e) => {        
         dispatch(deleteChat(e.target.id));   

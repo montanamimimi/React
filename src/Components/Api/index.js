@@ -13,33 +13,8 @@ export const Api = () => {
 
     console.log(peoples);
 
-    // const [peoples, setPeoples] = useState({});
-    // const [error, setError] = useState(false);
-    // const [loading, setLoading] = useState(false);
-
     const requestData =  async () => {
-
         dispatch(getApi());
-
-        // setLoading(true);
-        // try {
-        //     const response = await fetch(apiUrl);
-            
-        //     if (!response.ok) {
-        //         throw new Error("Not ok");
-        //     }
-
-        //     const result = await response.json();
-
-        //     setError(false);
-        //     setPeoples(result);
-
-        // } catch (err) {
-        //     console.warn(err)
-        //     setError(true);            
-        // } finally {
-        //     setLoading(false);
-        // }
     };
 
     useEffect(() => {
