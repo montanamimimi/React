@@ -4,20 +4,33 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import './BotsList.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { addChat, deleteChat } from '../../Store/chats/actions';
+import { deleteChat } from '../../Store/chats/actions';
 import { addMessageChat } from '../../Store/messages/actions';
 import { chatsList } from '../../Store/chats/selectors';
+import { onValue, set } from 'firebase/database';
+import { chatsRef, getChatMsgsRefById, getChatRefById } from '../../services/firebase'
 
 export const BotsList = () => {
 
+    const [chats, setChats] =  useState([]);
     const dispatch = useDispatch();
-    const myBots = useSelector(chatsList);    
-     
+    const myBots = useSelector(chatsList);         
     const [value, setValue] = useState();
+
+    useEffect(() => {
+        onValue(chatsRef, (chatsSnap) => {            
+            const newChats = [];
+            chatsSnap.forEach((snapshot) => {                
+                newChats.push(snapshot.val());
+            });
+            setChats(newChats);
+        })
+    }, []);
+
     const handleChange = (e) => {
         setValue(e.target.value);        
     }
@@ -25,17 +38,19 @@ export const BotsList = () => {
     const createChat = (e) => {
         e.preventDefault();
         setValue('');       
-        let newId = `chat${Date.now()}`;
-        dispatch(addChat({id: newId, name: value, message: 'Vzzzzzz'}));       
+        let newId = `chat${Date.now()}`;     
         
-        let newMessagesChat = {};
-        newMessagesChat[newId] = 
-            [        
-                {id: 1, name: value, text: 'Vzzzzzz'},                 
-            ]
+        set(getChatRefById(newId), { id: newId, name: value, message: 'Vzzzzzz' });
+        set(getChatMsgsRefById(newId), {id: 1, name: value, text: 'Vzzzzzz'})
+
+        // let newMessagesChat = {};
+        // newMessagesChat[newId] = 
+        //     [        
+        //         {id: 1, name: value, text: 'Vzzzzzz'},                 
+        //     ]
         
 
-        dispatch(addMessageChat(newMessagesChat));      
+       // dispatch(addMessageChat(newMessagesChat));      
     }
     const deleteChatItem = (e) => {        
         dispatch(deleteChat(e.target.id));   
@@ -47,7 +62,7 @@ export const BotsList = () => {
             <div class="chats-list">
                 <h3> List of chats </h3>
                 <List>
-                    {myBots.map((bot) => (
+                    {chats.map((bot) => (
                         <ListItem 
                         key={bot.id} 
                         >
